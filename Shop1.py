@@ -118,14 +118,24 @@ def inventory_display(inventory, items, prices):
     print(f"Total cost/value of inventory: ${total_cost}")
 
 def buyable_items(balance, items, prices):
-    print("Products you can buy with your current balance:")
-    can_buy = False
-    for index, price in enumerate(prices):
-        if price <= balance:
-            print(f"{index + 1}. {items[index]} - ${price}")
-            can_buy = True
-    if not can_buy:
-        print("No products available within your budget.")
+    if not items:
+        print("No products available.")
+        return [], 0, 0
+
+    affordable_items = []
+    cant_afford = 0
+    total_needed = 0
+
+    for i in range(len(items)):
+        if prices[i] <= balance:
+            affordable_items.append(items[i])
+            total_needed += prices[i]
+        else:
+            cant_afford += 1
+    print("Items you can afford:", affordable_items)
+    print("Total of all affordable items (sum):", total_needed)
+    print("Number of items you cannot afford:", cant_afford)
+    return affordable_items, total_needed, cant_afford           
     
 shop_options = {
     1: add_balance,
